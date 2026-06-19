@@ -1,0 +1,74 @@
+{
+  "descripcion": "Inventario de fuentes oficiales del corpus de Garrón. Capa 1 = guías Ley Simple (núcleo, lenguaje llano, pregunta-respuesta). Capa 2 = texto legal de respaldo (citación precisa). Solo fuentes oficiales del Estado argentino.",
+  "actualizado": "2026-06-19",
+  "fuentes": [
+    {
+      "id": "ls-defensa-consumidor",
+      "capa": 1,
+      "titulo": "Ley Simple: Defensa del consumidor",
+      "url": "https://www.argentina.gob.ar/justicia/derechofacil/leysimple/defensa-del-consumidor",
+      "temas": ["proteccion", "contratos_adhesion", "garantia", "servicios", "servicios_publicos", "atencion", "reclamos", "hipervulnerables"],
+      "formato": "html",
+      "nota": "Página madre. Ya viene en pares pregunta-respuesta con la norma citada. Cada par = un chunk."
+    },
+    {
+      "id": "ls-boton-arrepentimiento",
+      "capa": 1,
+      "titulo": "Ley Simple: Botón de arrepentimiento",
+      "url": "https://www.argentina.gob.ar/justicia/derechofacil/leysimple/boton-arrepentimiento",
+      "temas": ["arrepentimiento", "compra_online", "baja_servicio"],
+      "formato": "html"
+    },
+    {
+      "id": "ls-contratos-consumo",
+      "capa": 1,
+      "titulo": "Ley Simple: Contratos de consumo",
+      "url": "https://www.argentina.gob.ar/justicia/derechofacil/leysimple/contratos-de-consumo",
+      "temas": ["contratos", "clausulas"],
+      "formato": "html"
+    },
+    {
+      "id": "ls-clausulas-prohibidas",
+      "capa": 1,
+      "titulo": "Ley Simple: Cláusulas prohibidas en los contratos de consumo",
+      "url": "https://www.argentina.gob.ar/justicia/derechofacil/leysimple/consumo-economia/clausulas-prohibidas-en-los-contratos-de-consumo",
+      "temas": ["clausulas", "contratos"],
+      "formato": "html"
+    },
+    {
+      "id": "ls-ventanilla-unica",
+      "capa": 1,
+      "titulo": "Ley Simple: Ventanilla Federal Única de defensa del consumidor",
+      "url": "https://www.argentina.gob.ar/justicia/derechofacil/leysimple/ventanilla-unica-federal-de-reclamos-de-defensa-del-consumidor",
+      "temas": ["reclamos", "procedimiento"],
+      "formato": "html",
+      "nota": "Procedimiento para reclamar. Núcleo del flujo de derivación a la acción."
+    },
+    {
+      "id": "df-voy-de-compras",
+      "capa": 1,
+      "titulo": "Derecho Fácil: Voy de compras",
+      "url": "https://www.argentina.gob.ar/justicia/derechofacil/aplicalaley/comprar",
+      "temas": ["garantia", "arrepentimiento", "precio", "informacion", "cambio_devolucion"],
+      "formato": "html",
+      "nota": "Dataset pregunta-respuesta-artículo. Incluye cruces con el Código Civil y Comercial."
+    },
+    {
+      "id": "ley-24240",
+      "capa": 2,
+      "titulo": "Ley 24.240 de Defensa del Consumidor (texto actualizado)",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/ley-24240-638/actualizacion",
+      "temas": ["norma_completa"],
+      "formato": "html",
+      "nota": "Texto legal de respaldo. Chunking: un chunk por artículo. Se usa para citar, no como lectura principal."
+    }
+  ],
+  "fuera_de_alcance": {
+    "nota": "No se ingieren. Se manejan vía la tabla 'derivaciones'.",
+    "casos": [
+      "Jurisdicciones provinciales/municipales (ley 13.133 BA, OMIC locales, etc.)",
+      "Reclamos aéreos (van por ANAC)",
+      "Profesionales matriculados (van por colegios profesionales)"
+    ]
+  }
+}
