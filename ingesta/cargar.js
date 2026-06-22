@@ -7,7 +7,8 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { obtenerChunks } from './fetch.js';
-import { embed } from './embeddings.js';
+import { curar } from './curar.js';
+import { embed, DIMENSIONES } from './embeddings.js';
 
 const { SUPABASE_URL, SUPABASE_SERVICE_KEY } = process.env;
 
@@ -21,34 +22,64 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 async function main() {
   // 1. Obtener chunks (aborta si alguna fuente trae 0)
   const chunks = await obtenerChunks();
-
-  // 2. Generar embeddings
-  console.log('[cargar] Generando embeddings...');
-  for (const chunk of chunks) {
-    chunk.embedding = await embed(chunk.content);
-  }
-
-  // 3. Reemplazar el corpus de forma segura:
-  //    se cargan los nuevos ANTES de borrar los viejos sería lo ideal con
-  //    versionado; para el MVP, truncar + insertar dentro de una verificación.
   if (chunks.length === 0) {
     throw new Error('[cargar] 0 chunks. Abortando sin tocar la tabla.');
   }
 
-  console.log('[cargar] Limpiando tabla chunks...');
-  const { error: delErr } = await supabase.from('chunks').delete().neq('id', 0);
-  if (delErr) throw delErr;
+  // 1b. Curar metadata (tema + artículos). Aborta si falta curar algún chunk.
+  console.log('[cargar] Aplicando curación de metadata...');
+  await curar(chunks);
 
-  console.log(`[cargar] Insertando ${chunks.length} chunks...`);
-  // Insertar en lotes de 50
+  // 2. Generar embeddings + validar dimensión y metadata antes de tocar la DB.
+  //    Si algo está mal, fallamos acá, con el corpus viejo intacto.
+  console.log('[cargar] Generando embeddings...');
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
+    if (!chunk.tema) {
+      throw new Error(
+        `[cargar] chunk sin 'tema' (la columna es NOT NULL). ` +
+        `Falta el paso de curación de metadata. Fuente: ${chunk.fuente_url}`
+      );
+    }
+    chunk.embedding = await embed(chunk.content);
+    if (chunk.embedding.length !== DIMENSIONES) {
+      throw new Error(
+        `[cargar] embedding de ${chunk.embedding.length}d, se esperaban ${DIMENSIONES}d. ` +
+        `¿El modelo no coincide con el esquema?`
+      );
+    }
+    if ((i + 1) % 10 === 0) console.log(`[cargar] embeddings ${i + 1}/${chunks.length}`);
+  }
+
+  // 3. Carga NO destructiva (load-then-swap):
+  //    insertamos primero los nuevos; solo si TODO entra, borramos los viejos.
+  //    Si un lote falla, lanzamos antes de borrar nada → el corpus viejo sobrevive.
+  console.log(`[cargar] Insertando ${chunks.length} chunks nuevos...`);
+  const nuevosIds = [];
   for (let i = 0; i < chunks.length; i += 50) {
     const lote = chunks.slice(i, i + 50);
-    const { error } = await supabase.from('chunks').insert(lote);
+    const { data, error } = await supabase.from('chunks').insert(lote).select('id');
     if (error) throw error;
+    nuevosIds.push(...data.map((r) => r.id));
     console.log(`[cargar]   ${Math.min(i + 50, chunks.length)}/${chunks.length}`);
   }
 
-  console.log('[cargar] Listo. Corpus cargado.');
+  // 4. Borrar el corpus anterior (todo lo que no sea de esta carga).
+  console.log('[cargar] Eliminando el corpus anterior...');
+  const { error: delErr } = await supabase
+    .from('chunks')
+    .delete()
+    .not('id', 'in', `(${nuevosIds.join(',')})`);
+  if (delErr) {
+    // Los nuevos ya están cargados; quedan duplicados con los viejos.
+    // Es un estado recuperable (re-correr borra los viejos), no una pérdida.
+    throw new Error(
+      `[cargar] Los chunks nuevos se cargaron OK, pero falló el borrado de los viejos: ` +
+      `${delErr.message}. Hay duplicados temporales; re-correr resuelve.`
+    );
+  }
+
+  console.log(`[cargar] Listo. ${nuevosIds.length} chunks cargados, corpus anterior eliminado.`);
 }
 
 main().catch((e) => {

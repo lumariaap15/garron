@@ -1,0 +1,233 @@
+{
+  "_descripcion": "Curación manual del corpus. Clave = texto de la pregunta. `tema` revisado y `articulos` PRE-RELLENADOS por cruce con la Ley 24.240 / CCyC / normas de capa 2. Revisá las marcadas en docs (citas a normas fuera del corpus parseado: Res. 139/2020 hipervulnerables, Res. 424/2020 botón, Res. 316/2018 baja, Ley 25.954 redondeo, y artículos bis/ter del 24.240 que el parser no individualiza). La ley 24.240 NO va acá (se cura sola por artículo).",
+  "items": {
+    "¿A quiénes protege esta ley?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 1", "Ley 24.240 Art. 2"]
+    },
+    "¿Puedo renunciar a mis derechos como consumidor?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 37", "Ley 24.240 Art. 65"]
+    },
+    "¿Quiénes son los consumidores hipervulnerables?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 1", "Resolución SCI 139/2020"]
+    },
+    "¿Cuáles son las causas de hipervulnerabilidad?": {
+      "tema": "proteccion",
+      "articulos": ["Resolución SCI 139/2020"]
+    },
+    "¿Qué son los contratos de adhesión?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 38", "CCyC Art. 984"]
+    },
+    "¿Tengo alguna posibilidad de conocer el contrato de adhesión antes del momento en que debo decidir si lo firmo o no?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 38"]
+    },
+    "¿Qué información puedo pedir antes de comprar un producto o servicio?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 4"]
+    },
+    "¿Qué es la garantía?": {
+      "tema": "garantia",
+      "articulos": ["Ley 24.240 Art. 11", "Ley 24.240 Art. 14"]
+    },
+    "¿Qué incluye la garantía?": {
+      "tema": "garantia",
+      "articulos": ["Ley 24.240 Art. 11", "Ley 24.240 Art. 12"]
+    },
+    "¿Puede vencer el plazo de garantía mientras el producto está en reparación?": {
+      "tema": "garantia",
+      "articulos": ["Ley 24.240 Art. 16"]
+    },
+    "¿Qué pasa si la reparación del producto en garantía no me satisface?": {
+      "tema": "garantia",
+      "articulos": ["Ley 24.240 Art. 17"]
+    },
+    "¿Puedo exigir un presupuesto antes de contratar un servicio?": {
+      "tema": "servicios",
+      "articulos": ["Ley 24.240 Art. 21"]
+    },
+    "¿Qué pasa si el servicio realizado tiene defectos?": {
+      "tema": "servicios",
+      "articulos": ["Ley 24.240 Art. 23"]
+    },
+    "¿Pueden cobrarme algo cuando doy de baja un servicio?": {
+      "tema": "servicios",
+      "articulos": ["Ley 24.240 Art. 10 ter"]
+    },
+    "¿Puedo dar de baja un servicio por internet?": {
+      "tema": "servicios",
+      "articulos": ["Ley 24.240 Art. 10 ter", "Resolución 316/2018"]
+    },
+    "¿Qué obligaciones tiene la empresa proveedora de servicios cuando pido la baja por internet?": {
+      "tema": "servicios",
+      "articulos": ["Ley 24.240 Art. 10 ter", "Resolución 316/2018"]
+    },
+    "¿Se aplica la ley de defensa del consumidor a los servicios públicos?": {
+      "tema": "servicios_publicos",
+      "articulos": ["Ley 24.240 Art. 25", "Ley 24.240 Art. 27"]
+    },
+    "¿Qué pasa cuando se interrumpe un servicio público por culpa de la empresa prestadora?": {
+      "tema": "servicios_publicos",
+      "articulos": ["Ley 24.240 Art. 30", "Ley 24.240 Art. 30 bis"]
+    },
+    "¿Qué hago si facturan de más un servicio público?": {
+      "tema": "servicios_publicos",
+      "articulos": ["Ley 24.240 Art. 31"]
+    },
+    "¿Esta ley se aplica a otras relaciones de consumo?": {
+      "tema": "general",
+      "articulos": ["CCyC Art. 1092", "CCyC Art. 1093"]
+    },
+    "¿Las empresas deben tener servicios de atención al consumidor?": {
+      "tema": "general",
+      "articulos": ["Ley 24.240 Art. 27", "Resolución 1033/2021"]
+    },
+    "¿Dónde debe estar la información de atención al consumidor?": {
+      "tema": "general",
+      "articulos": ["Ley 24.240 Art. 4", "Resolución 1033/2021"]
+    },
+    "¿Qué tengo que hacer si hago una compra y no quieren darme el vuelto por falta de cambio?": {
+      "tema": "general",
+      "articulos": ["Ley 25.954"]
+    },
+    "¿Qué hago cuando me llegan mensajes de texto en el celular agregándome servicios pagos sin haberlos pedido?": {
+      "tema": "general",
+      "articulos": ["Ley 24.240 Art. 35"]
+    },
+    "¿Dónde puedo hacer un reclamo?": {
+      "tema": "reclamos",
+      "articulos": ["Ley 24.240 Art. 45"]
+    },
+    "¿Qué pasa si en el reclamo participa un consumidor hipervulnerable?": {
+      "tema": "reclamos",
+      "articulos": ["Resolución SCI 139/2020"]
+    },
+    "¿Qué es el botón de arrepentimiento?": {
+      "tema": "arrepentimiento",
+      "articulos": ["Ley 24.240 Art. 34", "Resolución 424/2020"]
+    },
+    "¿Debo hacer algún trámite para usar el botón de arrepentimiento?": {
+      "tema": "arrepentimiento",
+      "articulos": ["Ley 24.240 Art. 34", "Resolución 424/2020"]
+    },
+    "¿Cuánto tiempo tengo para usar el botón de arrepentimiento?": {
+      "tema": "arrepentimiento",
+      "articulos": ["Ley 24.240 Art. 34", "CCyC Art. 1110"]
+    },
+    "¿El vendedor tiene algún plazo para responder a mi arrepentimiento?": {
+      "tema": "arrepentimiento",
+      "articulos": ["Resolución 424/2020"]
+    },
+    "¿Debo pagar para devolver lo que compré?": {
+      "tema": "arrepentimiento",
+      "articulos": ["Ley 24.240 Art. 34", "CCyC Art. 1115"]
+    },
+    "¿A quiénes se considera consumidores?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 1", "CCyC Art. 1092"]
+    },
+    "¿Quien compra para revender también es consumidor?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 1"]
+    },
+    "¿Sólo pueden ser consumidores las personas humanas?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 1"]
+    },
+    "¿Qué obligaciones generales tiene la persona que vende?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 4", "Ley 24.240 Art. 8 bis"]
+    },
+    "¿Qué es una relación de consumo?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 3", "CCyC Art. 1092"]
+    },
+    "En la relación de consumo, ¿el proveedor siempre tiene que ser una empresa?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 2"]
+    },
+    "¿Puede haber relación de consumo con empresas públicas o solo con empresas privadas?": {
+      "tema": "proteccion",
+      "articulos": ["Ley 24.240 Art. 2", "Ley 24.240 Art. 3"]
+    },
+    "¿Qué pasa cuando la publicidad de un producto da información que no es verdadera?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 8", "Decreto 274/2019 Art. 9"]
+    },
+    "¿Hay publicidades prohibidas?": {
+      "tema": "contratos",
+      "articulos": ["Decreto 274/2019 Art. 9", "Decreto 274/2019 Art. 10"]
+    },
+    "¿La publicidad obliga al proveedor?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 7", "Ley 24.240 Art. 8"]
+    },
+    "¿Es posible hacer contratos de consumo por internet?": {
+      "tema": "contratos",
+      "articulos": ["CCyC Art. 1106", "CCyC Art. 1107"]
+    },
+    "¿El deber de información del proveedor es igual que en el resto de los contratos?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 4", "CCyC Art. 1107"]
+    },
+    "¿Qué hago si compro algo por medios electrónicos y luego me arrepiento?": {
+      "tema": "arrepentimiento",
+      "articulos": ["Ley 24.240 Art. 34", "CCyC Art. 1110"]
+    },
+    "¿Hay alguna excepción al derecho de arrepentirme?": {
+      "tema": "arrepentimiento",
+      "articulos": ["CCyC Art. 1116"]
+    },
+    "¿Qué son las cláusulas abusivas?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 37", "CCyC Art. 1119", "Resolución 53/2003"]
+    },
+    "¿Qué pasa si el contrato contiene ese tipo de cláusulas?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 37", "CCyC Art. 1122"]
+    },
+    "Me dicen que el contrato que firmé no es abusivo porque está autorizado por un organismo estatal, ¿puedo pedir igual su control ante un juez?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 39", "CCyC Art. 1122"]
+    },
+    "¿Qué debo saber sobre los contratos que ya están escritos, por ejemplo, en un formulario impreso?": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 38", "CCyC Art. 985", "Resolución 906/98"]
+    },
+    "ls-clausulas-prohibidas :: Cláusulas prohibidas": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 37", "Resolución 53/2003"]
+    },
+    "ls-clausulas-prohibidas :: Contratos de consumo especiales": {
+      "tema": "contratos",
+      "articulos": ["Resolución 9/2004"]
+    },
+    "ls-clausulas-prohibidas :: Cláusulas incluidas en contratos vigentes": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 37"]
+    },
+    "ls-clausulas-prohibidas :: Cláusulas abusivas": {
+      "tema": "contratos",
+      "articulos": ["Ley 24.240 Art. 37", "Resolución 53/2003"]
+    },
+    "ls-ventanilla-unica :: Ventanilla Federal Única": {
+      "tema": "reclamos",
+      "articulos": ["Ley 24.240 Art. 45"]
+    },
+    "ls-ventanilla-unica :: Funciones": {
+      "tema": "reclamos",
+      "articulos": ["Ley 24.240 Art. 45"]
+    },
+    "ls-ventanilla-unica :: Domicilio electrónico del proveedor": {
+      "tema": "reclamos",
+      "articulos": ["Ley 24.240 Art. 45"]
+    },
+    "ls-ventanilla-unica :: Formulario de denuncia": {
+      "tema": "reclamos",
+      "articulos": ["Ley 24.240 Art. 45"]
+    }
+  }
+}

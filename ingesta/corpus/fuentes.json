@@ -33,7 +33,9 @@
       "titulo": "Ley Simple: Cláusulas prohibidas en los contratos de consumo",
       "url": "https://www.argentina.gob.ar/justicia/derechofacil/leysimple/consumo-economia/clausulas-prohibidas-en-los-contratos-de-consumo",
       "temas": ["clausulas", "contratos"],
-      "formato": "html"
+      "formato": "html",
+      "parser": "seccion",
+      "nota": "Plantilla consumo-economia: secciones h3 + prosa, sin preguntas h5. Un chunk por sección."
     },
     {
       "id": "ls-ventanilla-unica",
@@ -42,16 +44,8 @@
       "url": "https://www.argentina.gob.ar/justicia/derechofacil/leysimple/ventanilla-unica-federal-de-reclamos-de-defensa-del-consumidor",
       "temas": ["reclamos", "procedimiento"],
       "formato": "html",
-      "nota": "Procedimiento para reclamar. Núcleo del flujo de derivación a la acción."
-    },
-    {
-      "id": "df-voy-de-compras",
-      "capa": 1,
-      "titulo": "Derecho Fácil: Voy de compras",
-      "url": "https://www.argentina.gob.ar/justicia/derechofacil/aplicalaley/comprar",
-      "temas": ["garantia", "arrepentimiento", "precio", "informacion", "cambio_devolucion"],
-      "formato": "html",
-      "nota": "Dataset pregunta-respuesta-artículo. Incluye cruces con el Código Civil y Comercial."
+      "parser": "seccion",
+      "nota": "Procedimiento para reclamar. Núcleo del flujo de derivación a la acción. Plantilla de secciones h3 + prosa (no preguntas h5)."
     },
     {
       "id": "ley-24240",
@@ -60,7 +54,97 @@
       "url": "https://www.argentina.gob.ar/normativa/nacional/ley-24240-638/actualizacion",
       "temas": ["norma_completa"],
       "formato": "html",
+      "parser": "ley",
+      "cita": "Ley 24.240",
       "nota": "Texto legal de respaldo. Chunking: un chunk por artículo. Se usa para citar, no como lectura principal."
+    },
+    {
+      "id": "ley-25065",
+      "capa": 2,
+      "titulo": "Ley 25.065 de Tarjetas de Crédito (texto actualizado)",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/55556/actualizacion",
+      "temas": ["norma_completa", "tarjetas_credito"],
+      "formato": "html",
+      "parser": "ley",
+      "cita": "Ley 25.065",
+      "nota": "Capa 2. Régimen de tarjetas de crédito. Un chunk por artículo."
+    },
+    {
+      "id": "ley-26682",
+      "capa": 2,
+      "titulo": "Ley 26.682 de Medicina Prepaga (texto actualizado)",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/ley-26682-182180/actualizacion",
+      "temas": ["norma_completa", "medicina_prepaga"],
+      "formato": "html",
+      "parser": "ley",
+      "cita": "Ley 26.682",
+      "nota": "Capa 2. Marco regulatorio de medicina prepaga. Un chunk por artículo."
+    },
+    {
+      "id": "decreto-274-2019",
+      "capa": 2,
+      "titulo": "Decreto 274/2019 de Lealtad Comercial (texto original)",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/decreto-274-2019-322236/texto",
+      "temas": ["norma_completa", "lealtad_comercial", "publicidad"],
+      "formato": "html",
+      "parser": "ley",
+      "cita": "Decreto 274/2019",
+      "nota": "Capa 2. Lealtad comercial, publicidad y prácticas comerciales. Un chunk por artículo. URL '/texto' (no tiene texto actualizado)."
+    },
+    {
+      "id": "res-53-2003",
+      "capa": 2,
+      "titulo": "Resolución 53/2003 — Cláusulas abusivas en contratos de consumo (texto actualizado)",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-53-2003-84410/actualizacion",
+      "temas": ["norma_completa", "clausulas", "contratos"],
+      "formato": "html",
+      "parser": "anexo",
+      "cita": "Resolución 53/2003",
+      "nota": "Capa 2. Su sustancia es el ANEXO: lista enumerada de cláusulas abusivas (a, b, c...). Un chunk por cláusula (parser 'anexo'), no por artículo. Anexo actualizado por Disposición 377/2026."
+    },
+    {
+      "id": "dec-276-98",
+      "capa": 2,
+      "titulo": "Decreto 276/98 — Sistema Nacional de Arbitraje de Consumo",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/49692/texto",
+      "temas": ["norma_completa", "arbitraje", "reclamos"],
+      "formato": "html",
+      "parser": "ley",
+      "cita": "Decreto 276/98",
+      "nota": "Capa 2. Crea el Sistema Nacional de Arbitraje de Consumo (vía de reclamo). Un chunk por artículo."
+    },
+    {
+      "id": "res-906-98",
+      "capa": 2,
+      "titulo": "Resolución 906/98 — Contratos escritos: normas para su redacción",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-906-1998-55384/texto",
+      "temas": ["norma_completa", "contratos"],
+      "formato": "html",
+      "parser": "ley",
+      "cita": "Resolución 906/98",
+      "nota": "Capa 2. Reglas de redacción de contratos de consumo escritos. Un chunk por artículo."
+    },
+    {
+      "id": "res-9-2004",
+      "capa": 2,
+      "titulo": "Resolución 9/2004 — Cláusulas abusivas por sector (medicina prepaga, comunicaciones, servicios financieros)",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/92000/texto",
+      "temas": ["norma_completa", "clausulas", "medicina_prepaga", "servicios_financieros"],
+      "formato": "html",
+      "parser": "anexo",
+      "cita": "Resolución 9/2004",
+      "nota": "Capa 2. Tres anexos con listas de cláusulas abusivas por sector: I medicina prepaga, II comunicaciones móviles, III servicios financieros/bancarios. Un chunk por cláusula (parser 'anexo' multi-anexo)."
+    },
+    {
+      "id": "res-87-2024",
+      "capa": 2,
+      "titulo": "Resolución 87/2024 — Transacciones con tarjetas en terminales electrónicas",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/resoluci%C3%B3n-87-2024-397264/texto",
+      "temas": ["norma_completa", "tarjetas_credito", "medios_pago"],
+      "formato": "html",
+      "parser": "ley",
+      "cita": "Resolución 87/2024",
+      "nota": "Capa 2. Información al consumidor en pagos con tarjeta de crédito/débito en terminales. Un chunk por artículo."
     }
   ],
   "fuera_de_alcance": {
@@ -69,6 +153,29 @@
       "Jurisdicciones provinciales/municipales (ley 13.133 BA, OMIC locales, etc.)",
       "Reclamos aéreos (van por ANAC)",
       "Profesionales matriculados (van por colegios profesionales)"
+    ],
+    "normativa_periferica": {
+      "nota": "Normas citadas en la página oficial de leyes de protección al consumidor (argentina.gob.ar/.../leyes-proteccion-consumidor) que se evaluaron y se dejaron fuera del MVP por baja relevancia para un asistente de reclamos de consumo. Reincorporar si el alcance lo requiere.",
+      "fuentes": [
+        { "norma": "Resolución 12/2016", "tema": "SEPA — sistema de publicidad de precios", "motivo": "Operativo/sectorial; el derecho a info de precios ya surge de la Ley 24.240." },
+        { "norma": "Ley 19.511", "tema": "SIMELA — metrología legal (pesas y medidas)", "motivo": "Tangencial al reclamo de consumo." },
+        { "norma": "Resolución 616/98", "tema": "Consejo Consultivo de los Consumidores", "motivo": "Institucional, no orientado al consumidor." },
+        { "norma": "Resolución 90/2016", "tema": "Autorización de asociaciones de consumidores", "motivo": "Registro institucional." },
+        { "norma": "Disposición 404/2024", "tema": "Defensa del turista", "motivo": "Nicho (turismo)." },
+        { "norma": "Ley 25.542", "tema": "Precio uniforme del libro", "motivo": "Nicho (libros)." },
+        { "norma": "Disposición 893/2025", "tema": "Modifica Resolución 394/2018", "motivo": "Modificatoria; sin valor autónomo de cita." }
+      ]
+    }
+  },
+  "retiradas": {
+    "nota": "Fuentes que estaban en el inventario pero su URL dejó de existir en el sitio oficial. Conservadas acá como registro; reincorporar si reaparecen.",
+    "fuentes": [
+      {
+        "id": "df-voy-de-compras",
+        "titulo": "Derecho Fácil: Voy de compras",
+        "url": "https://www.argentina.gob.ar/justicia/derechofacil/aplicalaley/comprar",
+        "motivo": "URL retirada (HTTP 403 / soft-404 'página no disponible' al 2026-06-22). El índice /aplicalaley ya no lista 'comprar'. Su contenido de consumo está cubierto por las guías leysimple."
+      }
     ]
   }
 }

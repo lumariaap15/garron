@@ -46,6 +46,19 @@ create table if not exists derivaciones (
 );
 
 -- ------------------------------------------------------------
+-- Row Level Security (lockdown total)
+-- ------------------------------------------------------------
+-- Ambas tablas se exponen por PostgREST. Sin RLS, la 'anon' key
+-- (que viaja al cliente) podría leer/escribir directamente.
+-- Activamos RLS SIN policies: 'anon' queda denegado para todo.
+-- La Edge Function usa la 'service_role' key, que SALTA RLS,
+-- así que el backend sigue funcionando. El cliente nunca toca
+-- estas tablas: todo pasa por la función /consulta.
+-- ------------------------------------------------------------
+alter table chunks       enable row level security;
+alter table derivaciones enable row level security;
+
+-- ------------------------------------------------------------
 -- Función de búsqueda híbrida con Reciprocal Rank Fusion
 -- ------------------------------------------------------------
 -- Combina full-text search (keyword) y similitud vectorial (semántica).

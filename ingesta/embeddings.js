@@ -20,10 +20,23 @@ async function getExtractor() {
   return extractor;
 }
 
+// El modelo tiene una ventana de 128 tokens (~110 palabras). Lo que exceda se
+// trunca: el vector sale igual de 384d, pero NO "ve" el final del texto. Por eso
+// avisamos cuando un chunk es claramente más largo que el presupuesto, para que
+// la curación lo parta en lugar de perder contenido en silencio.
+const LIMITE_PALABRAS_AVISO = 120;
+
 // Genera el embedding de un texto. Devuelve un array de 384 floats normalizados.
 export async function embed(texto) {
   const ext = await getExtractor();
-  const salida = await ext(texto, { pooling: 'mean', normalize: true });
+  const palabras = texto.trim().split(/\s+/).length;
+  if (palabras > LIMITE_PALABRAS_AVISO) {
+    console.warn(
+      `[embeddings] ⚠ chunk de ~${palabras} palabras > ${LIMITE_PALABRAS_AVISO}: ` +
+      `el embedding solo cubre los primeros ~128 tokens. Considerá partirlo.`
+    );
+  }
+  const salida = await ext(texto, { pooling: 'mean', normalize: true, truncation: true });
   return Array.from(salida.data);
 }
 

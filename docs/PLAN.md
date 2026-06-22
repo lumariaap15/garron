@@ -26,11 +26,14 @@ respuesta, y al final la cara visible.
 
 **Objetivo:** Supabase configurado y listo para recibir datos.
 
-- [ ] Crear proyecto en Supabase (free tier)
-- [ ] Habilitar extensión `vector`
-- [ ] Correr `db/schema.sql` en el SQL Editor
-- [ ] Cargar las derivaciones iniciales (`db/seed_derivaciones.sql`)
-- [ ] Verificar que la función `buscar_hibrido` existe y compila
+Runbook detallado para la parte externa: [`docs/SETUP_FASE1.md`](SETUP_FASE1.md).
+
+- [x] Esquema SQL listo (`db/schema.sql`) — extensión `vector`, tablas, índices, `buscar_hibrido`
+- [x] Seed de derivaciones listo (`db/seed_derivaciones.sql`)
+- [ ] Crear proyecto en Supabase (free tier) — *manual, ver runbook*
+- [ ] Correr `db/schema.sql` en el SQL Editor — *manual*
+- [ ] Cargar las derivaciones iniciales (`db/seed_derivaciones.sql`) — *manual*
+- [ ] Verificar con las consultas del runbook (extensión, tablas, `vector(384)`, `buscar_hibrido`) — *manual*
 
 **Riesgo que valida:** que el esquema (dimensión 384, diccionario `spanish`, RRF) sea correcto antes de meter datos.
 
@@ -40,14 +43,19 @@ respuesta, y al final la cara visible.
 
 **Objetivo:** el corpus oficial cargado en Supabase con embeddings y metadata.
 
-- [ ] Script de fetch de las URLs del inventario (`ingesta/fetch.js`)
-- [ ] Parseo HTML → chunks (las guías Ley Simple ya vienen en pares pregunta-respuesta)
-- [ ] Curación de metadata: tema, artículos citados, URL, fecha (corpus chico → vale hacerlo bien)
-- [ ] Generación de embeddings con Transformers.js (`ingesta/embeddings.js`)
-- [ ] Carga a Supabase (`ingesta/cargar.js`)
-- [ ] **Fallo ruidoso:** abortar si se trae 0 chunks (HTML cambió) en vez de borrar el corpus bueno
+Runbook: [`docs/INGESTA_FASE2.md`](INGESTA_FASE2.md).
+
+- [x] Script de fetch de las URLs del inventario (`ingesta/fetch.js`) — headers, `<main>`, normalización
+- [x] Parseo HTML → chunks (selectores `h5`/`h3` **verificados contra el HTML real**; test en `fetch.test.js`)
+- [x] Mecanismo de curación de metadata (`ingesta/curar.js`: scaffold + join, falla si falta curar)
+- [ ] Completar la curación a mano en `ingesta/corpus/curacion.json` (tema + artículos) — *manual*
+- [x] Generación de embeddings con Transformers.js (`ingesta/embeddings.js`) — aviso si excede 128 tokens
+- [x] Carga a Supabase (`ingesta/cargar.js`) — **no destructiva** (load-then-swap) + valida 384d
+- [x] **Fallo ruidoso:** aborta si una fuente trae 0 chunks o si falta curar metadata, sin borrar el corpus bueno
+- [ ] Correr la ingesta real contra Supabase (requiere Fase 1 lista) — *manual*
 
 **Riesgo que valida:** que el corpus alcance y que el chunking preserve la unidad pregunta-respuesta-artículo.
+*Estado:* parser validado contra HTML real (27 chunks bien formados de la página madre); falta correr las 6 fuentes restantes.
 
 **Verificación manual:** correr unas búsquedas SQL a mano y ver que devuelven los chunks esperados.
 
