@@ -10,6 +10,13 @@ import { obtenerChunks } from './fetch.js';
 import { curar } from './curar.js';
 import { embed, DIMENSIONES } from './embeddings.js';
 
+// Carga el .env del proyecto si Node lo soporta (>=20.12 / 22 / 24) y el archivo
+// existe. No agrega dependencia: usa la API nativa. En Node 18 es no-op → hay
+// que exportar las variables a mano o correr con `node --env-file=.env`.
+if (typeof process.loadEnvFile === 'function') {
+  try { process.loadEnvFile(); } catch { /* sin .env: seguimos con process.env */ }
+}
+
 const { SUPABASE_URL, SUPABASE_SERVICE_KEY } = process.env;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
@@ -55,9 +62,13 @@ async function main() {
   //    insertamos primero los nuevos; solo si TODO entra, borramos los viejos.
   //    Si un lote falla, lanzamos antes de borrar nada → el corpus viejo sobrevive.
   console.log(`[cargar] Insertando ${chunks.length} chunks nuevos...`);
+  // Proyectar a las columnas reales de la tabla: los chunks llevan campos
+  // internos del pipeline ('clave', 'seccion') que NO son columnas de 'chunks'.
+  const aFila = ({ content, tema, articulos, fuente_url, fuente_titulo, fuente_fecha, embedding }) =>
+    ({ content, tema, articulos, fuente_url, fuente_titulo, fuente_fecha, embedding });
   const nuevosIds = [];
   for (let i = 0; i < chunks.length; i += 50) {
-    const lote = chunks.slice(i, i + 50);
+    const lote = chunks.slice(i, i + 50).map(aFila);
     const { data, error } = await supabase.from('chunks').insert(lote).select('id');
     if (error) throw error;
     nuevosIds.push(...data.map((r) => r.id));
