@@ -1,10 +1,16 @@
 {
-  "name": "garron-ingesta",
+  "name": "garron",
   "version": "0.1.0",
-  "description": "Pipeline de ingesta del corpus de Garrón (scraping, chunking, embeddings, carga a Supabase)",
+  "private": true,
+  "description": "Garrón — monorepo: pipeline de ingesta (raíz) + frontend Next.js (workspace web/). La Edge Function vive en consulta/ (Deno, sin npm).",
   "type": "module",
+  "workspaces": [
+    "web"
+  ],
   "scripts": {
-    "ingesta": "node ingesta/cargar.js"
+    "ingesta": "node ingesta/cargar.js",
+    "dev": "npm run dev --workspace web",
+    "build:web": "npm run build --workspace web"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
