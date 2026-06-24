@@ -1,0 +1,20 @@
+{
+  "descripcion": "Complementos de capa 1 hechos a mano: síntesis en lenguaje llano de artículos OFICIALES, para cubrir consultas frecuentes que las guías scrapeadas no responden directamente. Cada uno cita el/los artículo(s) oficial(es) y es fiel a su texto. Pre-curados (tema + articulos ya asignados → no pasan por curacion.json). NO inventar reglas: solo reformular lo que la norma dice.",
+  "items": [
+    {
+      "clave": "¿Pueden cobrarme más caro que el precio publicado o exhibido?",
+      "respuesta": "No. El precio y las condiciones que el vendedor publica u ofrece (en la vidriera, la góndola, un aviso, un catálogo o su página web) lo obligan: la oferta dirigida al público obliga a quien la emite, y las precisiones de la publicidad se consideran incluidas en el contrato y obligan al oferente. Si te quieren cobrar más que el precio exhibido o publicado, podés exigir que se respete ese precio.",
+      "tema": "general",
+      "articulos": ["Ley 24.240 Art. 7", "Ley 24.240 Art. 8"],
+      "fuente_url": "https://www.argentina.gob.ar/normativa/nacional/ley-24240-638/actualizacion",
+      "fuente_titulo": "Ley 24.240, Art. 7 y 8 (síntesis en lenguaje llano)",
+      "fuente_fecha": null
+    }
+  ],
+  "huecos_conocidos": [
+    {
+      "tema": "prescripción / plazo del consumidor para reclamar",
+      "nota": "Pendiente legal. El Art. 50 de la Ley 24.240 regula la prescripción de las SANCIONES (3 años), no el plazo de las acciones del consumidor, que tras la Ley 26.994 (2014) se rige por el CCyC. No se autora un complemento hasta tener la regla y la cita correctas validadas. El caso del golden_set queda como hueco conocido."
+    }
+  ]
+}

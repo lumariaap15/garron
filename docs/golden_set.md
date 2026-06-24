@@ -18,7 +18,7 @@ Sirve para calibrar el umbral de evidencia y los pesos de la búsqueda híbrida.
 | Consulta | Esperado |
 |---|---|
 | "¿Dónde reclamo si una empresa no me cumple?" | Ventanilla Única Federal + qué datos llevar |
-| "¿Cuánto tiempo tengo para reclamar?" | Plazo de 3 años desde el incumplimiento |
+| "¿Cuánto tiempo tengo para reclamar?" | ⚠️ HUECO LEGAL CONOCIDO: el Art. 50 (3 años) es prescripción de SANCIONES, no el plazo de la acción del consumidor (que tras la Ley 26.994/2014 va por el CCyC). No hay chunk de capa 1 hasta validar la regla correcta. Ver `corpus/complementos.json > huecos_conocidos`. |
 | "¿Cómo doy de baja un servicio por internet?" | Botón de baja, código en 24hs |
 
 ## Tipo 3 — ¿Aplica a mi caso? (alcance / excepciones → DERIVAR)

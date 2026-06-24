@@ -17,9 +17,13 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_KEY')!;
 const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY')!;
 
-const MODELO_EMBED = 'Xenova/paraphrase-multilingual-MiniLM-L12-v2';
+const MODELO_EMBED = 'Xenova/multilingual-e5-small'; // mismo modelo que la ingesta
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
-const UMBRAL_EVIDENCIA = 0.012; // calibrar en Fase 3 contra el golden set
+// Piso de DOMINIO sobre fts_score (señal léxica OR a nivel consulta). Calibrado
+// contra el golden set: reales ≥0.4, "capital de Francia"=0.2 → 0.3 con margen.
+// Los negativos ambiguos que comparten vocabulario (ej. "importar auto") pasan
+// este filtro grueso y los frena el grounding estricto del LLM (segunda capa).
+const PISO_EVIDENCIA = 0.3;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
@@ -36,9 +40,11 @@ Reglas estrictas:
 - Tono claro y llano, español rioplatense, sin tecnicismos innecesarios.`;
 
 let extractor: any = null;
+// e5 requiere el prefijo "query: " en las consultas (los documentos se embeben
+// con "passage: " en la ingesta). Debe coincidir con ingesta/embeddings.js.
 async function embed(texto: string): Promise<number[]> {
   if (!extractor) extractor = await pipeline('feature-extraction', MODELO_EMBED);
-  const salida = await extractor(texto, { pooling: 'mean', normalize: true });
+  const salida = await extractor('query: ' + texto, { pooling: 'mean', normalize: true });
   return Array.from(salida.data);
 }
 
@@ -111,9 +117,12 @@ Deno.serve(async (req) => {
     });
     if (error) throw error;
 
-    // 4. Umbral de evidencia
-    const mejor = chunks?.[0]?.score ?? 0;
-    if (!chunks?.length || mejor < UMBRAL_EVIDENCIA) {
+    // 4. Compuerta de evidencia por DOMINIO: fts_score (relevancia léxica OR a
+    //    nivel consulta) por debajo del piso → fuera de tema. El score de RRF es
+    //    solo posicional, no sirve para esto. Es un filtro grueso; el grounding
+    //    del LLM es la segunda capa para los ambiguos.
+    const ftsScore = chunks?.[0]?.fts_score ?? 0;
+    if (!chunks?.length || ftsScore < PISO_EVIDENCIA) {
       return Response.json({
         tipo: 'sin_evidencia',
         mensaje: 'No tengo información oficial suficiente para responder esto con certeza. Te recomiendo consultar la Ventanilla Única Federal de Defensa del Consumidor.',

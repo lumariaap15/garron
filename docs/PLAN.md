@@ -65,12 +65,17 @@ Runbook: [`docs/INGESTA_FASE2.md`](INGESTA_FASE2.md).
 
 **Objetivo:** dado un texto, recuperar los fragmentos relevantes bien rankeados.
 
-- [ ] Probar `buscar_hibrido` con consultas reales ("me cobran de más", "producto fallado")
-- [ ] Calibrar pesos keyword vs. semántico
-- [ ] Definir el umbral de evidencia (debajo de X → "sin fundamento suficiente")
-- [ ] Set de consultas de prueba (`docs/golden_set.md`) basado en los 4 tipos de consulta
+- [x] Probar `buscar_hibrido` con consultas reales → 7/10 del golden set rankean bien
+- [x] Calibrar pesos keyword vs. semántico → roles separados: AND-FTS rankea, semántica e5 manda; OR-FTS solo para la compuerta
+- [x] Definir el umbral de evidencia → `fts_score >= 0.3` (filtro grueso) + grounding del LLM (segunda capa para ambiguos)
+- [x] Set de consultas de prueba (`docs/golden_set.md`) basado en los 4 tipos de consulta
 
-**Riesgo que valida:** que la recuperación en español funcione. Si flojea, cambiar de modelo de embeddings (solo re-generar, el esquema no cambia).
+**Resultado:** la recuperación flojeaba con el modelo original (rankeaba mal, umbral roto). Se rediseñó:
+arquitectura **parent-child** (hijos ≤80 palabras → sin truncación) + modelo **multilingual-e5-small**
+(prefijos query/passage) → ranking de roto a 7/10. Compuerta separada por roles (ver arriba).
+
+**Pendiente (huecos de corpus, no de modelo):** 2 de los 3 misses son por falta de chunks de capa 1
+sobre *prescripción (plazo 3 años)* y *precio exhibido* — se cubren agregando contenido, no cambiando el modelo.
 
 ---
 
@@ -94,12 +99,20 @@ Runbook: [`docs/INGESTA_FASE2.md`](INGESTA_FASE2.md).
 
 **Objetivo:** la cara del producto, diseñada para que NO parezca un chat genérico.
 
-- [ ] Inicio guiado por categorías de problema (no una caja de chat vacía)
-- [ ] Respuesta en formato ficha: "Qué te corresponde" · "Fundamento legal" · "Cómo reclamar"
-- [ ] Badge de fuente oficial visible
+- [x] Inicio guiado por categorías de problema (no una caja de chat vacía)
+- [x] Respuesta en formato ficha: "Qué te corresponde" · "Fundamento legal" · "Cómo reclamar"
+- [x] Badge de fuente oficial visible
 - [ ] Tarjeta de derivación clara cuando el caso queda fuera de alcance
 - [ ] (Opcional) toggle de "lenguaje accesible" para consumidores hipervulnerables
 - [ ] Deploy en Vercel
+- [ ] Conectar a la Edge Function `consulta` (hoy usa datos estáticos en `web/lib/demo-data.ts`)
+
+**Stack elegido:** Next.js 14 (App Router) + TypeScript · Tailwind + shadcn/ui (patrón) ·
+lucide-react · framer-motion · Inter. Ver [`web/README.md`](../web/README.md).
+
+*Estado:* interfaz mapeada **pixel a pixel** contra el diseño (Home + ficha de respuesta),
+con datos estáticos que ya espejan el contrato del backend. Falta la tarjeta de derivación,
+el cableado real a la Edge Function y el deploy.
 
 **Riesgo que valida:** la primera impresión. Que el usuario entienda en 3 segundos que esto sabe de SU problema.
 

@@ -17,6 +17,7 @@ import { readFile } from 'node:fs/promises';
 import * as cheerio from 'cheerio/slim';
 
 const INVENTARIO = new URL('./corpus/fuentes.json', import.meta.url);
+const COMPLEMENTOS = new URL('./corpus/complementos.json', import.meta.url);
 
 // Algunos sitios de gob.ar varían la respuesta (o la bloquean) según el cliente.
 // Nos identificamos como un navegador y pedimos español.
@@ -272,6 +273,37 @@ export async function obtenerChunks() {
     todos.push(...chunks);
   }
 
-  console.log(`[fetch] Total: ${todos.length} chunks de ${inventario.fuentes.length} fuentes.`);
+  // Complementos de capa 1 hechos a mano (síntesis de artículos oficiales para
+  // cubrir consultas frecuentes que las guías no responden). Pre-curados.
+  const complementos = await leerComplementos();
+  if (complementos.length) {
+    console.log(`[fetch] Complementos (síntesis a mano): ${complementos.length}`);
+    todos.push(...complementos);
+  }
+
+  console.log(`[fetch] Total: ${todos.length} chunks (${inventario.fuentes.length} fuentes + ${complementos.length} complementos).`);
   return todos;
+}
+
+// Carga los complementos a mano y los devuelve con forma de chunk (pre-curados:
+// ya traen tema + articulos, así que se saltean la curación manual). Si el
+// archivo no existe, devuelve [] (son opcionales).
+async function leerComplementos() {
+  let data;
+  try {
+    data = JSON.parse(await readFile(COMPLEMENTOS, 'utf-8'));
+  } catch (e) {
+    if (e.code === 'ENOENT') return [];
+    throw e;
+  }
+  return (data.items || []).map((it) => ({
+    clave: it.clave,
+    seccion: 'complemento',
+    content: `${it.clave}\n${it.respuesta}`,
+    tema: it.tema,
+    articulos: it.articulos || [],
+    fuente_url: it.fuente_url,
+    fuente_titulo: it.fuente_titulo,
+    fuente_fecha: it.fuente_fecha || null
+  }));
 }
