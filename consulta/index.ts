@@ -15,10 +15,14 @@ import { pipeline } from 'https://esm.sh/@xenova/transformers@2';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_KEY')!;
-const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY')!;
+const OPEN_ROUTER_API_KEY = Deno.env.get('OPEN_ROUTER_API_KEY')!;
 
 const MODELO_EMBED = 'Xenova/multilingual-e5-small'; // mismo modelo que la ingesta
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
+// OpenRouter (API OpenAI-compatible). ':free' = sin costo, con rate limit más
+// estricto; para producción conviene una variante paga o agregar saldo. El Llama
+// 70B free está muy saturado (429); gpt-oss-120b respondió bien y cita correcto.
+const MODELO_LLM = 'openai/gpt-oss-120b:free';
+const LLM_URL = 'https://openrouter.ai/api/v1/chat/completions';
 // Piso de DOMINIO sobre fts_score (señal léxica OR a nivel consulta). Calibrado
 // contra el golden set: reales ≥0.4, "capital de Francia"=0.2 → 0.3 con margen.
 // Los negativos ambiguos que comparten vocabulario (ej. "importar auto") pasan
@@ -27,13 +31,16 @@ const PISO_EVIDENCIA = 0.3;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
-// System prompt FIJO (se cachea en Groq → no consume cuota extra).
-// Es el núcleo del grounding estricto: el LLM no puede inventar ni opinar.
+// System prompt FIJO. Es el núcleo del grounding estricto: el LLM no puede
+// inventar ni opinar; responde solo con los fragmentos y cita el artículo.
 const SYSTEM_PROMPT = `Sos Garrón, un asistente de derechos del consumidor en Argentina.
 Respondé ÚNICAMENTE con base en los fragmentos oficiales que te paso como contexto.
 Reglas estrictas:
 - Si los fragmentos no alcanzan para responder, decí que no tenés información oficial
   suficiente y sugerí consultar la Ventanilla Única Federal. No inventes.
+- Si los fragmentos tratan un tema CERCANO pero no responden la pregunta puntual del
+  usuario, NO respondas con ellos como si aplicaran: aclará que no tenés información
+  oficial sobre ese punto específico. No fuerces una respuesta con datos que no corresponden.
 - Citá SIEMPRE el o los artículos que aparecen en los fragmentos (ej. "Ley 24.240, Art. 11").
 - No des asesoramiento legal sobre el caso particular; orientá e informá.
 - Estructurá la respuesta en: qué te corresponde / fundamento / cómo reclamar.
@@ -65,14 +72,17 @@ async function redactar(consulta: string, chunks: any[]) {
     .map((c, i) => `[Fragmento ${i + 1}] ${c.content}\nArtículos: ${(c.articulos || []).join(', ')}\nFuente: ${c.fuente_url}`)
     .join('\n\n');
 
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  const res = await fetch(LLM_URL, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${GROQ_API_KEY}`,
+      'Authorization': `Bearer ${OPEN_ROUTER_API_KEY}`,
       'Content-Type': 'application/json',
+      // Headers opcionales de OpenRouter para identificar la app (ranking/atribución).
+      'HTTP-Referer': 'https://garron.app',
+      'X-Title': 'Garrón',
     },
     body: JSON.stringify({
-      model: GROQ_MODEL,
+      model: MODELO_LLM,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: `Consulta del usuario: ${consulta}\n\nFragmentos oficiales:\n${contexto}` },
