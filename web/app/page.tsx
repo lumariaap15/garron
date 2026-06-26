@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -21,9 +22,13 @@ const item = {
 
 export default function Home() {
   const router = useRouter();
+  const [texto, setTexto] = useState("");
 
-  // Sin funcionalidad real todavía: cualquier camino lleva a la ficha de ejemplo.
-  const irAResultado = () => router.push("/resultado");
+  // Lleva la consulta a /resultado, que la resuelve contra el backend real.
+  const irAResultado = (consulta: string) => {
+    const q = consulta.trim();
+    if (q) router.push(`/resultado?c=${encodeURIComponent(q)}`);
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center px-6">
@@ -59,7 +64,7 @@ export default function Home() {
                 key={c.id}
                 variant="ghost"
                 disabled={!c.disponible}
-                onClick={irAResultado}
+                onClick={() => irAResultado(c.label)}
                 className="rounded-pill px-6 py-3.5 text-[16px]"
               >
                 {c.label}
@@ -76,11 +81,15 @@ export default function Home() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              irAResultado();
+              irAResultado(texto);
             }}
             className="mt-5 flex items-center gap-3"
           >
-            <Input placeholder="Ej: compré una heladera y vino fallada…" />
+            <Input
+              value={texto}
+              onChange={(e) => setTexto(e.target.value)}
+              placeholder="Ej: compré una heladera y vino fallada…"
+            />
             <Button
               type="submit"
               variant="soft"
